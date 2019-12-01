@@ -1,17 +1,12 @@
-import React,{Component} from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
-import {COMMENT} from '../shared/COMMENT';
+import React from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component{
 
-    constructor(props){
-        super(props);
 
-        this.state={comments:COMMENT}
-    }
+
     
-    renderDish(dish) {
-        const commentsection = this.state.comments.map((comment) => {
+   function RenderDish({dish,comments}) {
+        const commentsection = comments.map((comment) => {
             return (
                 <div key={comment.id}>
                 <dl className="row">
@@ -54,12 +49,12 @@ class DishDetail extends Component{
             );
         }
     }
-    render(){
+   const DishDetail=(props)=>{
         return(
-            this.renderDish(this.props.dishes)
+            <RenderDish dish={props.dish} comments={props.comments} />
         );
-    }
+        }
 
-}
+
 
 export default DishDetail;
