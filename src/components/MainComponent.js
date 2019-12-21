@@ -5,6 +5,8 @@ import Menu from './MenuComponents';
 import DishDetail from './DishdetailComponent';
 import { DISHES } from '../shared/DISHES';
 import { COMMENT } from '../shared/COMMENT';
+import {Switch,Route,Redirect} from 'react-router-dom';
+import Home from './HomeComponent';
 
 class Main extends Component {
 
@@ -13,24 +15,25 @@ class Main extends Component {
 
         this.state = {
             dishes: DISHES,
-            selecteddish:null,
-            comments:COMMENT
+            
         };
     }
-    onDishselect(dishId) {
-        this.setState({ selecteddish: dishId });
-        console.log(this.state.selecteddish);
-    }
     render() {
+        const HomePage= () => {
+            return(
+                <Home />
+            );
+        }
         return (
            <div>
-               <Header />
-                <Menu dishes={this.state.dishes} onClick={(dishId)=>this.onDishselect(dishId)}/>
-                <DishDetail dish={
-                    this.state.dishes.filter((dish) => dish.id === this.state.selecteddish)[0]} 
-                    comments={this.state.comments}/>
-                    <Footer/>
-            </div>
+            <Header />
+                <Switch>
+                    <Route path="/home" component={HomePage}/>
+                    <Route exact path="/menu" component={()=> <Menu dish={this.state.dishes}/> }/>
+                    <Redirect to="/home"/>
+                </Switch>
+            <Footer/>
+           </div>
         );
     }
 }
