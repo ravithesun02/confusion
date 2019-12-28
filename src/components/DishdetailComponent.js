@@ -28,8 +28,7 @@ class CommentForm extends Component{
 
     handleComments(values){
         this.handleToggleModal();
-        console.log(JSON.stringify(values));
-        alert("Comment is"+JSON.stringify(values));
+        this.props.addComment(this.props.dishId,values.rating,values.author,values.comment);
     }
 
 
@@ -100,15 +99,15 @@ class CommentForm extends Component{
 }
 
     
-   function RenderDish({dish,comment}) {
+   function RenderDish({dish,comment,addComment}) {
         const commentsection = comment.map((comment) => {
             return (
                 <div key={comment.id}>
                 <dl className="row">
                     <dt className="col-md-12">{comment.comment}</dt>
                     <dd>
-                        <span>{comment.author}</span>
-                        <span>{comment.date}</span>
+                        <span>--{comment.author}</span>
+                        <span> , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</span>
                     </dd>
                 </dl>
                 </div>
@@ -141,7 +140,7 @@ class CommentForm extends Component{
                         <div className="col-12 col-md-5 m-1">
                             <h4>Comments</h4>
                             {commentsection}
-                            <CommentForm/>
+                            <CommentForm dishId={dish.id} addComment={addComment}/>
                         </div>
 
                     </div>
@@ -156,7 +155,7 @@ class CommentForm extends Component{
     }
    const DishDetail=(props)=>{
         return(
-            <RenderDish dish={props.dish} comment={props.comment} />
+            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} />
         );
         }
 
