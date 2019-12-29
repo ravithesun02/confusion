@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle,BreadcrumbItem,Breadcrumb,Button,Modal,ModalHeader,ModalBody,Row,Label } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {LocalForm ,Control,Errors} from 'react-redux-form';
+import {Loading} from './LoadingComponent';
 
 
 
@@ -99,7 +100,7 @@ class CommentForm extends Component{
 }
 
     
-   function RenderDish({dish,comment,addComment}) {
+   function RenderDish({dish,comment,addComment,isLoading,errMess}) {
         const commentsection = comment.map((comment) => {
             return (
                 <div key={comment.id}>
@@ -113,6 +114,25 @@ class CommentForm extends Component{
                 </div>
             );
         });
+        if(isLoading){
+            return(
+                <div className="container">
+                    <div className="row">
+                        <Loading/>
+                    </div>
+                </div>
+            );
+        }
+        else if(errMess){
+            return(
+                <div className="container">
+                <div className="row">
+                   <h4>{errMess}</h4>
+                </div>
+            </div>
+            );
+        }
+
         if (dish != null) {
             return (
                 <div className="container">
@@ -155,7 +175,7 @@ class CommentForm extends Component{
     }
    const DishDetail=(props)=>{
         return(
-            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} />
+            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} isLoading={props.isLoading} errMess={props.errMess} />
         );
         }
 
