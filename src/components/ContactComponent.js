@@ -21,8 +21,7 @@ class Contact extends Component {
 
     handelSubmit(values)
     {
-        console.log("current state is "+JSON.stringify(values));
-        alert("current state is "+JSON.stringify(values));
+        this.props.postFeedback(values.firstname,values.lastname,values.telnum,values.email,values.agree,values.contacttype,values.message);
         this.props.resetFeedbackForm();
         
     }

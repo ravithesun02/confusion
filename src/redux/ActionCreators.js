@@ -189,3 +189,48 @@ export const addLeaders=(leaders)=>({
     type:ActionTypes.ADD_LEADERS,
     payload:leaders
 });
+
+export const addFeedback=(feedback)=>({
+    type:ActionTypes.ADD_FEEDBACK,
+    payload:feedback
+});
+
+export const postFeedback=(firstname,lastname,telnum,email,agree,contacttype,message)=>(dispatch)=>{
+    const newFeedback={
+        firstname:firstname,
+        lastname:lastname,
+        telnum:telnum,
+        email:email,
+        agree:agree,
+        contacttype:contacttype,
+        message:message
+    }
+    newFeedback.date=new Date().toISOString();
+    return fetch(baseURL+'feedback',{
+        method:'POST',
+        body:JSON.stringify(newFeedback),
+        headers:{
+            'content-type':'application/json'
+        },
+        credentials:'same-origin'
+    })
+    .then(response=>{
+        if(response.ok)
+        return response;
+        else{
+            var error=new Error('Error :'+response.status+': '+response.statusText);
+            error.response=response;
+            throw error;
+        }
+    },error=>{
+        var errormess=new Error(error.message);
+        throw errormess;
+    })
+    .then(response=>response.json())
+    .then(response=>dispatch(addFeedback(response)))
+    .then(response=>{alert('Thanks for your Feedback\n '+JSON.stringify(response.payload))})
+    .catch(error=>{
+        console.log(error.message);
+        alert('Feedback could not be sent\nErrors: '+error.message);
+    })
+}

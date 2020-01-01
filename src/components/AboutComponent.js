@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'r
 import { Link } from 'react-router-dom';
 import {baseURL} from '../shared/baseUrl';
 import {Loading} from './LoadingComponent';
+import {Fade,Stagger,FadeTransform} from 'react-animation-components';
 
 function RenderLeader({leader,isLoading,errmess})
 {
@@ -29,18 +30,26 @@ function RenderLeader({leader,isLoading,errmess})
     else
     {
             return(
+                <Stagger in>
             <div key={leader.id} className="col-12">
             <Media className="mt-4">
+                <FadeTransform in transformProps={{
+                    exitTransform:'scale(0.5) translateY(-50%)'
+                }}>
                 <Media middle left className="mr-4">
                     <Media object src={baseURL+leader.image} alt={leader.name}/>
                 </Media>
+                </FadeTransform>
+                <Fade in>
                 <Media body>
                 <Media heading>{leader.name}</Media>
                 <Media subheading className="m-2">{leader.designation}</Media>
                 {leader.description}
                 </Media>
+                </Fade>
             </Media>
             </div>
+            </Stagger>
         );
     }
 }
@@ -72,21 +81,25 @@ function About(props) {
                             <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
                         </div>
                         <div className="col-12 col-md-5">
-                            <Card>
-                                <CardHeader className="bg-primary text-white">Facts At a Glance</CardHeader>
-                                <CardBody>
-                                    <dl className="row p-1">
-                                        <dt className="col-6">Started</dt>
-                                        <dd className="col-6">3 Feb. 2013</dd>
-                                        <dt className="col-6">Major Stake Holder</dt>
-                                        <dd className="col-6">HK Fine Foods Inc.</dd>
-                                        <dt className="col-6">Last Year's Turnover</dt>
-                                        <dd className="col-6">$1,250,375</dd>
-                                        <dt className="col-6">Employees</dt>
-                                        <dd className="col-6">40</dd>
-                                    </dl>
-                                </CardBody>
-                            </Card>
+                            <FadeTransform in transformProps={{
+                                exitTransform:'scale(0.5) translateY(-50%)'
+                            }}>
+                                <Card>
+                                    <CardHeader className="bg-primary text-white">Facts At a Glance</CardHeader>
+                                    <CardBody>
+                                        <dl className="row p-1">
+                                            <dt className="col-6">Started</dt>
+                                            <dd className="col-6">3 Feb. 2013</dd>
+                                            <dt className="col-6">Major Stake Holder</dt>
+                                            <dd className="col-6">HK Fine Foods Inc.</dd>
+                                            <dt className="col-6">Last Year's Turnover</dt>
+                                            <dd className="col-6">$1,250,375</dd>
+                                            <dt className="col-6">Employees</dt>
+                                            <dd className="col-6">40</dd>
+                                        </dl>
+                                    </CardBody>
+                                </Card>
+                            </FadeTransform>
                         </div>
                         <div className="col-12">
                             <Card>
