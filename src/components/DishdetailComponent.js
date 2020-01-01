@@ -30,7 +30,7 @@ class CommentForm extends Component{
 
     handleComments(values){
         this.handleToggleModal();
-        this.props.addComment(this.props.dishId,values.rating,values.author,values.comment);
+        this.props.postComment(this.props.dishId,values.rating,values.author,values.comment);
     }
 
 
@@ -100,7 +100,7 @@ class CommentForm extends Component{
    
 }
 
-function RenderComment({dish,addComment,comment,CommentErrMess})
+function RenderComment({dish,postComment,comment,CommentErrMess})
 {
     const commentsection = comment.map((comment) => {
         return (
@@ -129,13 +129,13 @@ function RenderComment({dish,addComment,comment,CommentErrMess})
         return(
             <>
             {commentsection}
-            <CommentForm dishId={dish.id} addComment={addComment}/>
+            <CommentForm dishId={dish.id} postComment={postComment}/>
             </>
         );
     }
 }
     
-   function RenderDish({dish,comment,addComment,isLoading,errMess,CommentErrMess}) {
+   function RenderDish({dish,comment,postComment,isLoading,errMess,CommentErrMess}) {
       
       
        
@@ -185,7 +185,7 @@ function RenderComment({dish,addComment,comment,CommentErrMess})
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <h4>Comments</h4>
-                           <RenderComment dish={dish} addComment={addComment} comment={comment} CommentErrMess={CommentErrMess}/>
+                           <RenderComment dish={dish} postComment={postComment} comment={comment} CommentErrMess={CommentErrMess}/>
                         </div>
 
                     </div>
@@ -200,7 +200,7 @@ function RenderComment({dish,addComment,comment,CommentErrMess})
     }
    const DishDetail=(props)=>{
         return(
-            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} isLoading={props.isLoading} errMess={props.errMess} CommentErrMess={props.CommentErrMess} />
+            <RenderDish dish={props.dish} comment={props.comment} postComment={props.postComment} isLoading={props.isLoading} errMess={props.errMess} CommentErrMess={props.CommentErrMess} />
         );
         }
 

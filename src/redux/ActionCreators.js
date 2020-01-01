@@ -2,15 +2,49 @@ import * as ActionTypes from './ActionTypes';
 import {baseURL} from '../shared/baseUrl';
 
 
-export const addComment=(dishId,rating,author,comment)=>({
+export const addComment=(comment)=>({
     type:ActionTypes.ADD_COMMENT,
-    payload:{
+    payload:comment
+});
+
+export const postComment=(dishId,rating,author,comment)=>(dispatch)=>{
+    const newComment={
         dishId:dishId,
         rating:rating,
         author:author,
         comment:comment
     }
-});
+    newComment.date=new Date().toISOString();
+
+    return fetch(baseURL+'comments',{
+        method:'POST',
+        body:JSON.stringify(newComment),
+        headers:{
+            'Content-type':'application/json'
+        },
+        credentials:'same-origin'
+    })
+    .then(response=>{
+        if(response.ok)
+        return response;
+        else
+        {
+            var error=new Error('Error'+response.status+':'+response.statusText);
+            error.response=response;
+            throw error;
+        }
+    },
+    error=>{
+        var errormess=new Error(error.message);
+        throw errormess;
+    })
+    .then(response=>response.json())
+    .then(response=>dispatch(addComment(response)))
+    .catch(error=>{console.log('post comments ,',error.message);
+     alert('Your comment could not be posted\n Error:'+error.message);   })
+
+}
+
 //fetchDishes is a thunk as it is returning a function and it has access to dispatch as well to getState()
 
 export const fetchDishes=()=>(dispatch)=>{
