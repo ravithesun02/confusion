@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle,BreadcrumbItem,Breadcrumb,
 import {Link} from 'react-router-dom';
 import {LocalForm ,Control,Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
+import {baseURL} from '../shared/baseUrl';
 
 
 
@@ -99,21 +100,46 @@ class CommentForm extends Component{
    
 }
 
+function RenderComment({dish,addComment,comment,CommentErrMess})
+{
+    const commentsection = comment.map((comment) => {
+        return (
+            <div key={comment.id}>
+            <dl className="row">
+                <dt className="col-md-12">{comment.comment}</dt>
+                <dd>
+                    <span>--{comment.author}</span>
+                    <span> , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</span>
+                </dd>
+            </dl>
+            </div>
+        );
+    });
+    if(CommentErrMess)
+    {
+     return(
+         <div className="container">
+         <div className="row">
+            <h4>{CommentErrMess}</h4>
+         </div>
+     </div>
+     );
+    }
+    else{
+        return(
+            <>
+            {commentsection}
+            <CommentForm dishId={dish.id} addComment={addComment}/>
+            </>
+        );
+    }
+}
     
-   function RenderDish({dish,comment,addComment,isLoading,errMess}) {
-        const commentsection = comment.map((comment) => {
-            return (
-                <div key={comment.id}>
-                <dl className="row">
-                    <dt className="col-md-12">{comment.comment}</dt>
-                    <dd>
-                        <span>--{comment.author}</span>
-                        <span> , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</span>
-                    </dd>
-                </dl>
-                </div>
-            );
-        });
+   function RenderDish({dish,comment,addComment,isLoading,errMess,CommentErrMess}) {
+      
+      
+       
+        
         if(isLoading){
             return(
                 <div className="container">
@@ -150,7 +176,7 @@ class CommentForm extends Component{
                         <div className="col-12 col-md-5 m-1">
                         <Card>
                             <CardBody>
-                                <CardImg top src={dish.image} alt={dish.name}>
+                                <CardImg top src={baseURL+dish.image} alt={dish.name}>
                                 </CardImg>
                                 <CardTitle>{dish.name}</CardTitle>
                                 <CardText>{dish.description}</CardText>
@@ -159,8 +185,7 @@ class CommentForm extends Component{
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <h4>Comments</h4>
-                            {commentsection}
-                            <CommentForm dishId={dish.id} addComment={addComment}/>
+                           <RenderComment dish={dish} addComment={addComment} comment={comment} CommentErrMess={CommentErrMess}/>
                         </div>
 
                     </div>
@@ -175,7 +200,7 @@ class CommentForm extends Component{
     }
    const DishDetail=(props)=>{
         return(
-            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} isLoading={props.isLoading} errMess={props.errMess} />
+            <RenderDish dish={props.dish} comment={props.comment} addComment={props.addComment} isLoading={props.isLoading} errMess={props.errMess} CommentErrMess={props.CommentErrMess} />
         );
         }
 
