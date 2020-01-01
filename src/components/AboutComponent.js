@@ -4,32 +4,9 @@ import { Link } from 'react-router-dom';
 import {baseURL} from '../shared/baseUrl';
 import {Loading} from './LoadingComponent';
 
-function RenderLeader({leader})
+function RenderLeader({leader,isLoading,errmess})
 {
-    return(
-        <div key={leader.id} className="col-12">
-        <Media className="mt-4">
-            <Media middle left className="mr-4">
-                <Media object src={baseURL+leader.image} alt={leader.name}/>
-            </Media>
-            <Media body>
-            <Media heading>{leader.name}</Media>
-            <Media subheading className="m-2">{leader.designation}</Media>
-            {leader.description}
-            </Media>
-        </Media>
-        </div>
-    );
-}
-
-function About(props) {
-
-    const leaders = props.leaders.leaders.map((leader) => {
-        return (
-            <RenderLeader leader={leader}/>
-        );
-    });
-    if(props.isLoading)
+    if(isLoading)
     {
         return(
             <div className="container">
@@ -39,18 +16,43 @@ function About(props) {
             </div>
         );
     }
-    else if(props.errmess)
+    else if(errmess)
     {
         return(
             <div className="container">
             <div className="row">
-               <h4>{props.errmess}</h4>
+               <h4>{errmess}</h4>
             </div>
         </div>
         );
     }
     else
     {
+            return(
+            <div key={leader.id} className="col-12">
+            <Media className="mt-4">
+                <Media middle left className="mr-4">
+                    <Media object src={baseURL+leader.image} alt={leader.name}/>
+                </Media>
+                <Media body>
+                <Media heading>{leader.name}</Media>
+                <Media subheading className="m-2">{leader.designation}</Media>
+                {leader.description}
+                </Media>
+            </Media>
+            </div>
+        );
+    }
+}
+
+function About(props) {
+
+    const leaders = props.leaders.leaders.map((leader) => {
+        return (
+            <RenderLeader leader={leader} isLoading={props.isLoading} errmess={props.errmess}/>
+        );
+    });
+    
                 return(
                 <div className="container">
                     <div className="row">
@@ -113,7 +115,6 @@ function About(props) {
                     </div>
                 </div>
             );
-    }
 }
 
 export default About;
