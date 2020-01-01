@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {LocalForm ,Control,Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
 import {baseURL} from '../shared/baseUrl';
-
+import {Fade,FadeTransform,Stagger} from 'react-animation-components';
 
 
 const required=(val)=>(val) && val.length;
@@ -41,7 +41,7 @@ class CommentForm extends Component{
             
             <Modal isOpen={this.state.isModalOpen} toggle={this.handleToggleModal}>
                 <ModalHeader toggle={this.handleToggleModal}>Submit Comment</ModalHeader>
-                <ModalBody>
+                <ModalBody className="m-4">
                     <LocalForm onSubmit={(values)=>this.handleComments(values)}> 
                         <Row className="form-group">
                             <Label htmlForm="rating">Rating</Label>
@@ -104,7 +104,9 @@ function RenderComment({dish,postComment,comment,CommentErrMess})
 {
     const commentsection = comment.map((comment) => {
         return (
+            <Stagger in>
             <div key={comment.id}>
+                <Fade in>
             <dl className="row">
                 <dt className="col-md-12">{comment.comment}</dt>
                 <dd>
@@ -112,7 +114,9 @@ function RenderComment({dish,postComment,comment,CommentErrMess})
                     <span> , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</span>
                 </dd>
             </dl>
+            </Fade>
             </div>
+            </Stagger>
         );
     });
     if(CommentErrMess)
@@ -174,6 +178,9 @@ function RenderComment({dish,postComment,comment,CommentErrMess})
                     <div className="row">
                         
                         <div className="col-12 col-md-5 m-1">
+                            <FadeTransform in transformProps={{
+                                exitTransform:'scale(0.5) translateY(-50%)'
+                            }}>
                         <Card>
                             <CardBody>
                                 <CardImg top src={baseURL+dish.image} alt={dish.name}>
@@ -182,6 +189,7 @@ function RenderComment({dish,postComment,comment,CommentErrMess})
                                 <CardText>{dish.description}</CardText>
                             </CardBody>
                         </Card>
+                        </FadeTransform>
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <h4>Comments</h4>
